@@ -5,8 +5,15 @@ const PORT = process.env.PORT || 3000;
 const users = [
     { id: 1, name: "John Doe" },
     { id: 2, name: "Jane Doe" },
-    { id: 3, name: "Jim Doe" },
+    { id: 3, name: "Jim Doe" }
 ];
+
+
+// Logger Middleware
+const Logger = ((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+})
 
 
 const server = createServer((req, res) => {
