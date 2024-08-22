@@ -10,34 +10,60 @@ const users = [
 
 
 // Logger Middleware
-const Logger = ((req, res, next) => {
+const Logger = (req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
-})
+}
+
+
+//JSON middleware
+const jsonMiddleware = (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+}
+
+
+//Get Users Handle
+const getUsersHandle = (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.write(JSON.stringify(users));
+    res.end();
+}
+
+// Get User By Id Handle
+const getUserByIdHandle = (req, res) => {
+    const id = req.url.split('/')[3];
+    const user = users.find((user) => user.id === parseInt(id));
+    res.setHeader('Content-Type', 'application/json');
+    if (user) {
+        res.write(JSON.stringify(user));
+    } else {
+        res.statusCode = 404;
+        res.write(JSON.stringify({ message: "User not found" }));
+    }
+    res.end();
+}
+
+
+// Not Found Handle
+const notFoundHandle = (req, res) => {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.write(JSON.stringify({ message: "Route not found" }));
+    res.end();
+}
 
 
 const server = createServer((req, res) => {
     Logger(req, res, () => {
-        if (req.url === '/api/users' && req.method === "GET") {
-            res.setHeader('Content-Type', 'application/json');
-            res.write(JSON.stringify(users));
-            res.end();
-        } else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "GET") {
-            const id = req.url.split('/')[3];
-            const user = users.find((user) => user.id === parseInt(id));
-            res.setHeader('Content-Type', 'application/json');
-            if (user) {
-                res.write(JSON.stringify(user));
+        jsonMiddleware(req, res, () => {
+            if (req.url === '/api/users' && req.method === "GET") {
+                getUsersHandle(req, res);
+            } else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "GET") {
+                getUserByIdHandle(req, res);
             } else {
-                res.statusCode = 404;
-                res.write(JSON.stringify({ message: "User not found" }));
+                notFoundHandle(req, res);
             }
-            res.end();
-        } else {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.write(JSON.stringify({ message: "Route not found" }));
-            res.end();
-        }
+        })
     })
 });
 
