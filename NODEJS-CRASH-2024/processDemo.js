@@ -17,7 +17,7 @@ console.log(process.title);
 // memoryUsage()
 console.log(process.memoryUsage());
 
-// update()
+// uptime()
 console.log(process.uptime());
 
 process.on('exit', (code) => {
