@@ -28,6 +28,26 @@ const getProductById = async (req, res, id) => {
     }
 }
 
+const createProduct = async (req, res) => {
+    try {
+        const product = {
+            title: 'Test Product',
+            description: 'This my product',
+            price: 100
+        }
+
+
+        const newProduct = Products.create(product);
+
+
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(newProduct));
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getProducts,
     getProductById
