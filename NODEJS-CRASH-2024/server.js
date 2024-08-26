@@ -2,7 +2,7 @@ import http from 'http';
 import fs from 'fs/promises';
 import url from 'url';
 import path from 'path';
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
