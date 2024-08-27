@@ -10,7 +10,7 @@ const server = http.createServer((req, res) => {
     } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'GET') {
         let id = req.url.split('/')[3];
         getProductById(req, res, id);
-    } else if (req.url === '/api/products' && req.method === "POST") {
+    } else if (req.url === '/api/products' && req.method === 'POST') {
         createProduct(req, res);
     } else {
         res.writeHead(200, { 'Content-Type': 'application/json' });

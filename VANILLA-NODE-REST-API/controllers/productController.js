@@ -36,12 +36,27 @@ const createProduct = async (req, res) => {
             price: 100
         }
 
+        let body = '';
 
-        const newProduct = Products.create(product);
+        req.on('data', (chunk) => {
+            body += chunk.toString();
+        })
+
+        req.on('end', async () => {
+            const { title, description, price } = JSON.parse(body);
 
 
-        res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(newProduct));
+            const product = {
+                title,
+                description,
+                price
+            }
+
+            const newProduct = await Products.create(product);
+
+            res.writeHead(201, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(newProduct));
+        })
 
     } catch (error) {
         console.log(error);
@@ -50,5 +65,6 @@ const createProduct = async (req, res) => {
 
 module.exports = {
     getProducts,
-    getProductById
+    getProductById,
+    createProduct
 }
