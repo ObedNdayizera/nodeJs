@@ -12,6 +12,8 @@ const server = http.createServer((req, res) => {
         getProductById(req, res, id);
     } else if (req.url === '/api/products' && req.method === 'POST') {
         createProduct(req, res);
+    } else if (req.url === '/api/products' && req.method === 'PUT') {
+        UpdateProduct(req, res);
     } else {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: 'Route Not Found' }));
