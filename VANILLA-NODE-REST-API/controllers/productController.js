@@ -30,12 +30,6 @@ const getProductById = async (req, res, id) => {
 
 const createProduct = async (req, res) => {
     try {
-        const product = {
-            title: 'Test Product',
-            description: 'This my product',
-            price: 100
-        }
-
         let body = '';
 
         req.on('data', (chunk) => {
@@ -43,11 +37,11 @@ const createProduct = async (req, res) => {
         })
 
         req.on('end', async () => {
-            const { title, description, price } = JSON.parse(body);
+            const { name, description, price } = JSON.parse(body);
 
 
             const product = {
-                title,
+                name,
                 description,
                 price
             }
