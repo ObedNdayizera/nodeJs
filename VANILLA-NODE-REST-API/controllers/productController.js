@@ -1,5 +1,7 @@
 const Products = require('../models/productModel');
 
+const { getPostData } = require('../utils');
+
 const getProducts = async (req, res) => {
     try {
         const products = await Products.findAll();
@@ -30,27 +32,21 @@ const getProductById = async (req, res, id) => {
 
 const createProduct = async (req, res) => {
     try {
-        let body = '';
+        const body = await getPostData(req);
 
-        req.on('data', (chunk) => {
-            body += chunk.toString();
-        })
-
-        req.on('end', async () => {
-            const { name, description, price } = JSON.parse(body);
+        const { name, description, price } = JSON.parse(body);
 
 
-            const product = {
-                name,
-                description,
-                price
-            }
+        const product = {
+            name,
+            description,
+            price
+        }
 
-            const newProduct = await Products.create(product);
+        const newProduct = await Products.create(product);
 
-            res.writeHead(201, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(newProduct));
-        })
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(newProduct));
 
     } catch (error) {
         console.log(error);
