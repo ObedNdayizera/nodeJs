@@ -57,7 +57,7 @@ const createProduct = async (req, res) => {
 
 const UpdateProductById = async (req, res, id) => {
     try {
-        const product = Products.findById(id);
+        const product = await Products.findById(id);
 
         if (!product) {
             res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -67,9 +67,8 @@ const UpdateProductById = async (req, res, id) => {
 
             const { name, description, price } = JSON.parse(body);
 
-
             const productData = {
-                name: name || product.title,
+                name: name || product.name,
                 description: description || product.description,
                 price: price || product.price
             }
