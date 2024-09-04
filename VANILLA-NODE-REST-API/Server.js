@@ -7,15 +7,15 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer((req, res) => {
     if (req.url === '/api/products' && req.method === 'GET') {
         getProducts(req, res)
-    } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'GET') {
+    } else if (req.url.match(/\/api\/products\/\w+/) && req.method === 'GET') {
         let id = req.url.split('/')[3];
         getProductById(req, res, id);
     } else if (req.url === '/api/products' && req.method === 'POST') {
         createProduct(req, res);
-    } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'PUT') {
+    } else if (req.url.match(/\/api\/products\/\w+/) && req.method === 'PUT') {
         let id = req.url.split('/')[3];
         UpdateProductById(req, res, id);
-    } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method === 'DELETE') {
+    } else if (req.url.match(/\/api\/products\/\w+/) && req.method === 'DELETE') {
         let id = req.url.split('/')[3];
         removeProductById(req, res, id);
     } else {
