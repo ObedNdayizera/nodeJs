@@ -80,4 +80,23 @@ router.put('/:id', (req, res) => {
     res.status(200).json(posts);
 })
 
+
+// Delete Post
+router.delete('/:id', (req, res) => {
+    let id = parseInt(req.params.id);
+
+    const post = posts.find((post) => post.id === id);
+
+    if (!post) {
+        const error = new Error(`A post with the id of ${id} was not found`);
+        error.status = 404;
+        return next(error);
+    }
+
+    posts = posts.filter(post => post.id !== id);
+    res.status(200).json(posts);
+
+
+})
+
 export default router;
