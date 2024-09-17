@@ -20,26 +20,30 @@ router.get('/', (req, res) => {
 
 //Get a single post
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
     let id = parseInt(req.params.id);
     let post = posts.find(post => post.id == id);
 
     if (!post) {
-        return res.status(404).json({ message: `A Post With Id Of ${id} Was Not Found` });
+        let error = new Error(`A Post With Id Of ${id} Was Not Found`);
+        error.status = 404;
+        return next(error);
     }
     res.status(200).json(post);
 
 })
 
 //Create New Post
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const newPost = {
         id: posts.length + 1,
         title: req.body.title
     }
 
     if (!newPost.title) {
-        return res.status(400).json({ msg: "Please Include A Title" });
+        let error = new Error(`Please Include A Title`);
+        error.status = 400;
+        return next(error);
     }
 
     posts.push(newPost);

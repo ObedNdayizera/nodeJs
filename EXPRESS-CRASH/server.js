@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import logger from './middleware/logger.js';
 import posts from './routes/posts.js';
+import errorHandle from './middleware/error.js';
 
 const PORT = process.env.PORT || 8000;
 
@@ -16,7 +17,8 @@ app.use(logger);
 //setup static folder
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/posts', posts)
+app.use('/api/posts', posts);
+app.use(errorHandle);
 
 
 app.listen(PORT, () => {
